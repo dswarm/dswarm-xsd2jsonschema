@@ -1,0 +1,141 @@
+{
+  "title" : "bla",
+  "type" : "object",
+  "properties" : {
+    "datei" : {
+      "type" : "object",
+      "properties" : {
+        "datensatz" : {
+          "type" : "object",
+          "properties" : {
+            "feld" : {
+              "type" : "object",
+              "properties" : {
+                "tf" : {
+                  "type" : "object",
+                  "properties" : { }
+                },
+                "stw" : {
+                  "type" : "string"
+                },
+                "ns" : {
+                  "type" : "string"
+                },
+                "uf" : {
+                  "type" : "object",
+                  "properties" : {
+                    "tf" : {
+                      "type" : "object",
+                      "properties" : { }
+                    },
+                    "stw" : {
+                      "type" : "string"
+                    },
+                    "ns" : {
+                      "type" : "string"
+                    },
+                    "@code" : {
+                      "type" : "string"
+                    },
+                    "@id" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "@nr" : {
+                  "type" : "string"
+                },
+                "@ind" : {
+                  "type" : "string"
+                },
+                "@id" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "@mabVersion" : {
+              "type" : "string"
+            },
+            "@status" : {
+              "type" : "string"
+            },
+            "@id" : {
+              "type" : "string"
+            },
+            "@typ" : {
+              "type" : "string"
+            }
+          }
+        },
+        "@id" : {
+          "type" : "string"
+        },
+        "@typ" : {
+          "type" : "string"
+        }
+      }
+    },
+    "datensatz" : {
+      "type" : "object",
+      "properties" : {
+        "feld" : {
+          "type" : "object",
+          "properties" : {
+            "tf" : {
+              "type" : "object",
+              "properties" : { }
+            },
+            "stw" : {
+              "type" : "string"
+            },
+            "ns" : {
+              "type" : "string"
+            },
+            "uf" : {
+              "type" : "object",
+              "properties" : {
+                "tf" : {
+                  "type" : "object",
+                  "properties" : { }
+                },
+                "stw" : {
+                  "type" : "string"
+                },
+                "ns" : {
+                  "type" : "string"
+                },
+                "@code" : {
+                  "type" : "string"
+                },
+                "@id" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "@nr" : {
+              "type" : "string"
+            },
+            "@ind" : {
+              "type" : "string"
+            },
+            "@id" : {
+              "type" : "string"
+            }
+          }
+        },
+        "@mabVersion" : {
+          "type" : "string"
+        },
+        "@status" : {
+          "type" : "string"
+        },
+        "@id" : {
+          "type" : "string"
+        },
+        "@typ" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
