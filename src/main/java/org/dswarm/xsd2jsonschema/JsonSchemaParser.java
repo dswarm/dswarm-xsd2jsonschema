@@ -14,6 +14,7 @@ import com.sun.xml.xsom.XSAttributeDecl;
 import com.sun.xml.xsom.XSAttributeUse;
 import com.sun.xml.xsom.XSComplexType;
 import com.sun.xml.xsom.XSContentType;
+import com.sun.xml.xsom.XSDeclaration;
 import com.sun.xml.xsom.XSElementDecl;
 import com.sun.xml.xsom.XSModelGroup;
 import com.sun.xml.xsom.XSModelGroupDecl;
@@ -36,7 +37,6 @@ import org.dswarm.xsd2jsonschema.model.JSString;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 
 public class JsonSchemaParser {
 
@@ -71,11 +71,11 @@ public class JsonSchemaParser {
 
 			final JSElement element = iterateElement(xsElementDecl);
 
-			return particle.isRepeated()? new JSArray(element) : element;
+			return particle.isRepeated() ? new JSArray(element) : element;
 		} else if (term.isModelGroupDecl()) {
 
 			final XSModelGroupDecl xsModelGroupDecl = term.asModelGroupDecl();
-			final String name = xsModelGroupDecl.getName();
+			final String name =getDeclarationName(xsModelGroupDecl);
 
 			final List<JSElement> elements = iterateModelGroup(xsModelGroupDecl.getModelGroup());
 
@@ -117,9 +117,11 @@ public class JsonSchemaParser {
 
 		final XSType xsElementDeclType = elementDecl.getType();
 
+		final String elementName = getDeclarationName(elementDecl);
+
 		if (xsElementDeclType.isSimpleType()) {
 
-			return iterateSimpleType(xsElementDeclType.asSimpleType()).withName(elementDecl.getName());
+			return iterateSimpleType(xsElementDeclType.asSimpleType()).withName(elementName);
 
 		} else if (xsElementDeclType.isComplexType()) {
 
@@ -127,12 +129,12 @@ public class JsonSchemaParser {
 			final XSSimpleType type = xsComplexType.getContentType().asSimpleType();
 
 			if (type != null) {
-				final JSElement simpleJsElement = iterateSimpleType(type).withName(elementDecl.getName());
+				final JSElement simpleJsElement = iterateSimpleType(type).withName(elementName);
 
 				final int numAttributes = xsComplexType.getAttributeUses().size();
 				if (numAttributes > 0) {
 					final List<JSElement> elements = new ArrayList<>(numAttributes);
-					final JSObject jsElements = new JSObject(elementDecl.getName());
+					final JSObject jsElements = new JSObject(elementName);
 
 					jsElements.add(simpleJsElement);
 
@@ -148,7 +150,7 @@ public class JsonSchemaParser {
 
 			}
 
-			final JSObject jsElements = new JSObject(elementDecl.getName());
+			final JSObject jsElements = new JSObject(elementName);
 
 			final List<JSElement> elements = iterateComplexType(xsComplexType);
 
@@ -162,7 +164,7 @@ public class JsonSchemaParser {
 			return jsElements;
 		}
 
-		return new JSNull(elementDecl.getName());
+		return new JSNull(elementName);
 	}
 
 	private List<JSElement> iterateComplexType(final XSComplexType complexType) {
@@ -190,19 +192,24 @@ public class JsonSchemaParser {
 
 	private void iterateComplexAttributes(final XSComplexType complexType, final List<JSElement> result) {
 
+
 		final Collection<? extends XSAttributeUse> attributeUses = complexType.getAttributeUses();
 
 		for (final XSAttributeUse attributeUse : attributeUses) {
 			final XSAttributeDecl attributeUseDecl = attributeUse.getDecl();
 			final XSSimpleType type = attributeUseDecl.getType();
 
-			result.add(iterateSimpleType(type).withName("@" + attributeUseDecl.getName()));
+			final String attributeName = getDeclarationName(attributeUseDecl, complexType);
+
+			result.add(iterateSimpleType(type).withName("@" + attributeName));
 		}
 	}
 
 	private JSElement iterateSimpleType(final XSSimpleType simpleType) {
 
-		return new JSString(simpleType.getName());
+		final String simpleTypeName = getDeclarationName(simpleType);
+
+		return new JSString(simpleTypeName);
 	}
 
 	public void parse(final InputStream is) throws SAXException {
@@ -252,6 +259,39 @@ public class JsonSchemaParser {
 		}
 
 		return root;
+	}
+
+	private String getDeclarationName(final XSDeclaration decl) {
+
+		final String targetNameSpace = decl.getTargetNamespace();
+
+		return getDeclarationNameWithNamespace(decl, targetNameSpace);
+	}
+
+	private String getDeclarationNameWithNamespace(final XSDeclaration decl, final String targetNameSpace) {
+		final String declName;
+
+		if (targetNameSpace != null && !targetNameSpace.trim().isEmpty()) {
+
+			declName = targetNameSpace + "#" + decl.getName();
+		} else {
+
+			declName = decl.getName();
+		}
+
+		return declName;
+	}
+
+	private String getDeclarationName(final XSDeclaration decl, final XSDeclaration alternativeDecl) {
+
+		final String declName = getDeclarationName(decl);
+
+		if(declName.startsWith("http://")) {
+
+			return declName;
+		}
+
+		return getDeclarationNameWithNamespace(decl, alternativeDecl.getTargetNamespace());
 	}
 }
 

@@ -2,137 +2,137 @@
   "title" : "bla",
   "type" : "object",
   "properties" : {
-    "datei" : {
+    "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datei" : {
       "type" : "object",
       "properties" : {
-        "datensatz" : {
+        "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datensatz" : {
           "type" : "object",
           "properties" : {
-            "feld" : {
+            "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#feld" : {
               "type" : "object",
               "properties" : {
-                "tf" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                   "type" : "object",
                   "properties" : { }
                 },
-                "stw" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
                   "type" : "string"
                 },
-                "ns" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ns" : {
                   "type" : "string"
                 },
-                "uf" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#uf" : {
                   "type" : "object",
                   "properties" : {
-                    "tf" : {
+                    "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                       "type" : "object",
                       "properties" : { }
                     },
-                    "stw" : {
+                    "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
                       "type" : "string"
                     },
-                    "ns" : {
+                    "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ns" : {
                       "type" : "string"
                     },
-                    "@code" : {
+                    "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#code" : {
                       "type" : "string"
                     },
-                    "@id" : {
+                    "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
                       "type" : "string"
                     }
                   }
                 },
-                "@nr" : {
+                "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#nr" : {
                   "type" : "string"
                 },
-                "@ind" : {
+                "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ind" : {
                   "type" : "string"
                 },
-                "@id" : {
+                "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
                   "type" : "string"
                 }
               }
             },
-            "@mabVersion" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#mabVersion" : {
               "type" : "string"
             },
-            "@status" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#status" : {
               "type" : "string"
             },
-            "@id" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
               "type" : "string"
             },
-            "@typ" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#typ" : {
               "type" : "string"
             }
           }
         },
-        "@id" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
           "type" : "string"
         },
-        "@typ" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#typ" : {
           "type" : "string"
         }
       }
     },
-    "datensatz" : {
+    "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datensatz" : {
       "type" : "object",
       "properties" : {
-        "feld" : {
+        "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#feld" : {
           "type" : "object",
           "properties" : {
-            "tf" : {
+            "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
               "type" : "object",
               "properties" : { }
             },
-            "stw" : {
+            "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
               "type" : "string"
             },
-            "ns" : {
+            "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ns" : {
               "type" : "string"
             },
-            "uf" : {
+            "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#uf" : {
               "type" : "object",
               "properties" : {
-                "tf" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                   "type" : "object",
                   "properties" : { }
                 },
-                "stw" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
                   "type" : "string"
                 },
-                "ns" : {
+                "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ns" : {
                   "type" : "string"
                 },
-                "@code" : {
+                "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#code" : {
                   "type" : "string"
                 },
-                "@id" : {
+                "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
                   "type" : "string"
                 }
               }
             },
-            "@nr" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#nr" : {
               "type" : "string"
             },
-            "@ind" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#ind" : {
               "type" : "string"
             },
-            "@id" : {
+            "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
               "type" : "string"
             }
           }
         },
-        "@mabVersion" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#mabVersion" : {
           "type" : "string"
         },
-        "@status" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#status" : {
           "type" : "string"
         },
-        "@id" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#id" : {
           "type" : "string"
         },
-        "@typ" : {
+        "@http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#typ" : {
           "type" : "string"
         }
       }
