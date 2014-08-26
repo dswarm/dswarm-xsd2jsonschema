@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.avgl</groupId>
+	<groupId>org.dswarm</groupId>
 	<artifactId>xsd2jsonschema</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>xsd2jsonschema</name>
-	<url>http://maven.apache.org</url>
+	<name>dswarm - xsd2jsonschema</name>
+	<url>http://dswarm.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,9 +21,11 @@
 		<maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
 		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
 		<maven-release-plugin.version>2.4.2</maven-release-plugin.version>
-		<jackson.version>2.3.1</jackson.version>
+		<maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
+		<maven-version-plugin.version>2.1</maven-version-plugin.version>
+		<jackson.version>2.4.2</jackson.version>
 		<junit.version>4.11</junit.version>
-		<google.guava.version>14.0.1</google.guava.version>
+		<google.guava.version>18.0</google.guava.version>
 	</properties>
 
 	<build>
@@ -79,6 +81,16 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${maven-version-plugin.version}</version>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -93,6 +105,16 @@
 			</testResource>
 		</testResources>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${maven-version-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<dependencies>
 		<dependency>
@@ -132,6 +154,12 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${google.guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
