@@ -1,18 +1,23 @@
 {
   "title" : "bla",
   "type" : "object",
+  "mixed" : false,
   "properties" : {
     "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datei" : {
       "type" : "object",
+      "mixed" : false,
       "properties" : {
         "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datensatz" : {
           "type" : "object",
+          "mixed" : false,
           "properties" : {
             "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#feld" : {
               "type" : "object",
+              "mixed" : true,
               "properties" : {
                 "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                   "type" : "object",
+                  "mixed" : false,
                   "properties" : { }
                 },
                 "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
@@ -23,9 +28,11 @@
                 },
                 "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#uf" : {
                   "type" : "object",
+                  "mixed" : true,
                   "properties" : {
                     "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                       "type" : "object",
+                      "mixed" : false,
                       "properties" : { }
                     },
                     "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
@@ -77,12 +84,15 @@
     },
     "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#datensatz" : {
       "type" : "object",
+      "mixed" : false,
       "properties" : {
         "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#feld" : {
           "type" : "object",
+          "mixed" : true,
           "properties" : {
             "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
               "type" : "object",
+              "mixed" : false,
               "properties" : { }
             },
             "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {
@@ -93,9 +103,11 @@
             },
             "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#uf" : {
               "type" : "object",
+              "mixed" : true,
               "properties" : {
                 "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#tf" : {
                   "type" : "object",
+                  "mixed" : false,
                   "properties" : { }
                 },
                 "http://www.ddb.de/professionell/mabxml/mabxml-1.xsd#stw" : {

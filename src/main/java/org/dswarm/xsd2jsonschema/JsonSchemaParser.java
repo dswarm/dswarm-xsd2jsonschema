@@ -126,6 +126,7 @@ public class JsonSchemaParser {
 		} else if (xsElementDeclType.isComplexType()) {
 
 			final XSComplexType xsComplexType = xsElementDeclType.asComplexType();
+			final boolean isMixed = xsComplexType.isMixed();
 			final XSSimpleType type = xsComplexType.getContentType().asSimpleType();
 
 			if (type != null) {
@@ -134,7 +135,7 @@ public class JsonSchemaParser {
 				final int numAttributes = xsComplexType.getAttributeUses().size();
 				if (numAttributes > 0) {
 					final List<JSElement> elements = new ArrayList<>(numAttributes);
-					final JSObject jsElements = new JSObject(elementName);
+					final JSObject jsElements = new JSObject(elementName, isMixed);
 
 					jsElements.add(simpleJsElement);
 
@@ -150,7 +151,7 @@ public class JsonSchemaParser {
 
 			}
 
-			final JSObject jsElements = new JSObject(elementName);
+			final JSObject jsElements = new JSObject(elementName, isMixed);
 
 			final List<JSElement> elements = iterateComplexType(xsComplexType);
 
