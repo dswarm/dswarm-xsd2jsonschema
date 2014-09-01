@@ -13,14 +13,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class JSObject extends JSElement implements Iterable<JSElement> {
 
 	private final List<JSElement> list;
+	private final boolean mixed;
 
 	public JSObject(final String name, final List<JSElement> elements) {
 		super(name);
+		this.mixed = false;
+		this.list = checkNotNull(elements);
+	}
+
+	public JSObject(final String name, final boolean mixed, final List<JSElement> elements) {
+		super(name);
+		this.mixed = mixed;
 		this.list = checkNotNull(elements);
 	}
 
 	public JSObject(final String name) {
 		super(name);
+		this.mixed = false;
+		this.list = new ArrayList<>();
+	}
+
+	public JSObject(final String name, final boolean mixed) {
+		super(name);
+		this.mixed = mixed;
 		this.list = new ArrayList<>();
 	}
 
@@ -44,6 +59,11 @@ public class JSObject extends JSElement implements Iterable<JSElement> {
 		return "object";
 	}
 
+	public boolean isMixed() {
+
+		return mixed;
+	}
+
 	@Override
 	public List<JSElement> getProperties() {
 		return list;
@@ -58,6 +78,7 @@ public class JSObject extends JSElement implements Iterable<JSElement> {
 	protected void renderInternal(final JsonGenerator jgen) throws IOException {
 		final List<JSElement> properties = getProperties();
 
+		jgen.writeBooleanField("mixed", isMixed());
 		jgen.writeObjectFieldStart("properties");
 
 		for (final JSElement property : properties) {
