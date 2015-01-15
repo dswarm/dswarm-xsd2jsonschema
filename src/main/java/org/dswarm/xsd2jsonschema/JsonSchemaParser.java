@@ -149,12 +149,17 @@ public class JsonSchemaParser {
 				final int numAttributes = xsComplexType.getAttributeUses().size();
 				if (numAttributes > 0) {
 					final List<JSElement> elements = new ArrayList<>(numAttributes);
-					final JSObject jsElements = new JSObject(elementName, isMixed);
+					final JSObject jsElements;
 
 					// to avoid doubling of attribute in attribute path
-					if (!jsElements.getName().equals(simpleJsElement.getName())) {
+					if (!elementName.equals(simpleJsElement.getName())) {
+
+						jsElements = new JSObject(elementName, isMixed);
 
 						jsElements.add(simpleJsElement);
+					} else {
+
+						jsElements = new JSObject(elementName, true);
 					}
 
 					iterateComplexAttributes(xsComplexType, elements);

@@ -9,7 +9,7 @@
       "properties" : {
         "http://www.loc.gov/MARC21/slim#leader" : {
           "type" : "object",
-          "mixed" : false,
+          "mixed" : true,
           "properties" : {
             "@http://www.loc.gov/MARC21/slim#id" : {
               "type" : "string"
@@ -21,7 +21,7 @@
           "items" : {
             "http://www.loc.gov/MARC21/slim#controlfield" : {
               "type" : "object",
-              "mixed" : false,
+              "mixed" : true,
               "properties" : {
                 "@http://www.loc.gov/MARC21/slim#id" : {
                   "type" : "string"
@@ -42,7 +42,7 @@
               "properties" : {
                 "http://www.loc.gov/MARC21/slim#subfield" : {
                   "type" : "object",
-                  "mixed" : false,
+                  "mixed" : true,
                   "properties" : {
                     "@http://www.loc.gov/MARC21/slim#id" : {
                       "type" : "string"
@@ -86,7 +86,7 @@
           "properties" : {
             "http://www.loc.gov/MARC21/slim#leader" : {
               "type" : "object",
-              "mixed" : false,
+              "mixed" : true,
               "properties" : {
                 "@http://www.loc.gov/MARC21/slim#id" : {
                   "type" : "string"
@@ -98,7 +98,7 @@
               "items" : {
                 "http://www.loc.gov/MARC21/slim#controlfield" : {
                   "type" : "object",
-                  "mixed" : false,
+                  "mixed" : true,
                   "properties" : {
                     "@http://www.loc.gov/MARC21/slim#id" : {
                       "type" : "string"
@@ -119,7 +119,7 @@
                   "properties" : {
                     "http://www.loc.gov/MARC21/slim#subfield" : {
                       "type" : "object",
-                      "mixed" : false,
+                      "mixed" : true,
                       "properties" : {
                         "@http://www.loc.gov/MARC21/slim#id" : {
                           "type" : "string"
