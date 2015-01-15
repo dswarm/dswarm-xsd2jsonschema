@@ -41,6 +41,8 @@ import com.sun.xml.xsom.XSTerm;
 import com.sun.xml.xsom.XSType;
 import com.sun.xml.xsom.XSWildcard;
 import com.sun.xml.xsom.parser.XSOMParser;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import org.dswarm.xsd2jsonschema.model.JSArray;
 import org.dswarm.xsd2jsonschema.model.JSElement;
@@ -49,9 +51,6 @@ import org.dswarm.xsd2jsonschema.model.JSObject;
 import org.dswarm.xsd2jsonschema.model.JSOther;
 import org.dswarm.xsd2jsonschema.model.JSRoot;
 import org.dswarm.xsd2jsonschema.model.JSString;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class JsonSchemaParser {
 
@@ -90,7 +89,7 @@ public class JsonSchemaParser {
 		} else if (term.isModelGroupDecl()) {
 
 			final XSModelGroupDecl xsModelGroupDecl = term.asModelGroupDecl();
-			final String name =getDeclarationName(xsModelGroupDecl);
+			final String name = getDeclarationName(xsModelGroupDecl);
 
 			final List<JSElement> elements = iterateModelGroup(xsModelGroupDecl.getModelGroup());
 
@@ -152,7 +151,11 @@ public class JsonSchemaParser {
 					final List<JSElement> elements = new ArrayList<>(numAttributes);
 					final JSObject jsElements = new JSObject(elementName, isMixed);
 
-					jsElements.add(simpleJsElement);
+					// to avoid doubling of attribute in attribute path
+					if (!jsElements.getName().equals(simpleJsElement.getName())) {
+
+						jsElements.add(simpleJsElement);
+					}
 
 					iterateComplexAttributes(xsComplexType, elements);
 
@@ -207,7 +210,6 @@ public class JsonSchemaParser {
 	}
 
 	private void iterateComplexAttributes(final XSComplexType complexType, final List<JSElement> result) {
-
 
 		final Collection<? extends XSAttributeUse> attributeUses = complexType.getAttributeUses();
 
@@ -302,7 +304,7 @@ public class JsonSchemaParser {
 
 		final String declName = getDeclarationName(decl);
 
-		if(declName.startsWith("http://")) {
+		if (declName.startsWith("http://")) {
 
 			return declName;
 		}

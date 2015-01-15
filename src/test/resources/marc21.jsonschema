@@ -1,0 +1,162 @@
+{
+  "title" : "bla",
+  "type" : "object",
+  "mixed" : false,
+  "properties" : {
+    "http://www.loc.gov/MARC21/slim#record" : {
+      "type" : "object",
+      "mixed" : false,
+      "properties" : {
+        "http://www.loc.gov/MARC21/slim#leader" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "@http://www.loc.gov/MARC21/slim#id" : {
+              "type" : "string"
+            }
+          }
+        },
+        "http://www.loc.gov/MARC21/slim#controlfield" : {
+          "type" : "array",
+          "items" : {
+            "http://www.loc.gov/MARC21/slim#controlfield" : {
+              "type" : "object",
+              "mixed" : false,
+              "properties" : {
+                "@http://www.loc.gov/MARC21/slim#id" : {
+                  "type" : "string"
+                },
+                "@http://www.loc.gov/MARC21/slim#tag" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "http://www.loc.gov/MARC21/slim#datafield" : {
+          "type" : "array",
+          "items" : {
+            "http://www.loc.gov/MARC21/slim#datafield" : {
+              "type" : "object",
+              "mixed" : false,
+              "properties" : {
+                "http://www.loc.gov/MARC21/slim#subfield" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "@http://www.loc.gov/MARC21/slim#id" : {
+                      "type" : "string"
+                    },
+                    "@http://www.loc.gov/MARC21/slim#code" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "@http://www.loc.gov/MARC21/slim#id" : {
+                  "type" : "string"
+                },
+                "@http://www.loc.gov/MARC21/slim#tag" : {
+                  "type" : "string"
+                },
+                "@http://www.loc.gov/MARC21/slim#ind1" : {
+                  "type" : "string"
+                },
+                "@http://www.loc.gov/MARC21/slim#ind2" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "@http://www.loc.gov/MARC21/slim#type" : {
+          "type" : "string"
+        },
+        "@http://www.loc.gov/MARC21/slim#id" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://www.loc.gov/MARC21/slim#collection" : {
+      "type" : "object",
+      "mixed" : false,
+      "properties" : {
+        "http://www.loc.gov/MARC21/slim#record" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.loc.gov/MARC21/slim#leader" : {
+              "type" : "object",
+              "mixed" : false,
+              "properties" : {
+                "@http://www.loc.gov/MARC21/slim#id" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "http://www.loc.gov/MARC21/slim#controlfield" : {
+              "type" : "array",
+              "items" : {
+                "http://www.loc.gov/MARC21/slim#controlfield" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "@http://www.loc.gov/MARC21/slim#id" : {
+                      "type" : "string"
+                    },
+                    "@http://www.loc.gov/MARC21/slim#tag" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            },
+            "http://www.loc.gov/MARC21/slim#datafield" : {
+              "type" : "array",
+              "items" : {
+                "http://www.loc.gov/MARC21/slim#datafield" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.loc.gov/MARC21/slim#subfield" : {
+                      "type" : "object",
+                      "mixed" : false,
+                      "properties" : {
+                        "@http://www.loc.gov/MARC21/slim#id" : {
+                          "type" : "string"
+                        },
+                        "@http://www.loc.gov/MARC21/slim#code" : {
+                          "type" : "string"
+                        }
+                      }
+                    },
+                    "@http://www.loc.gov/MARC21/slim#id" : {
+                      "type" : "string"
+                    },
+                    "@http://www.loc.gov/MARC21/slim#tag" : {
+                      "type" : "string"
+                    },
+                    "@http://www.loc.gov/MARC21/slim#ind1" : {
+                      "type" : "string"
+                    },
+                    "@http://www.loc.gov/MARC21/slim#ind2" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            },
+            "@http://www.loc.gov/MARC21/slim#type" : {
+              "type" : "string"
+            },
+            "@http://www.loc.gov/MARC21/slim#id" : {
+              "type" : "string"
+            }
+          }
+        },
+        "@http://www.loc.gov/MARC21/slim#id" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}

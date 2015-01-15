@@ -31,26 +31,37 @@ import java.net.URL;
 public class JsonSchemaParserTest {
 
 	@Test
-	public void testJsonSchemaParser() throws Exception {
+	public void testJsonSchemaParserWMabxml() throws Exception {
+
+		testJsonSchemaParserInternal("mabxml-1.xsd", "mabxml.jsonschema", "bla");
+	}
+
+	@Test
+	public void testJsonSchemaParserWMarc21() throws Exception {
+
+		testJsonSchemaParserInternal("MARC21slim.xsd", "marc21.jsonschema", "bla");
+	}
+
+	private void testJsonSchemaParserInternal(final String xsdSchemaFileName, final String resultFileName, final String rootNodeIdentifier) throws Exception {
 
 		final ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		final JsonSchemaParser schemaParser = new JsonSchemaParser();
 
-		final URL resourceURL = Resources.getResource("mabxml-1.xsd");
+		final URL resourceURL = Resources.getResource(xsdSchemaFileName);
 		final ByteSource byteSource = Resources.asByteSource(resourceURL);
 
 		schemaParser.parse(byteSource.openStream());
-		final JSRoot root = schemaParser.apply("bla");
+		final JSRoot root = schemaParser.apply(rootNodeIdentifier);
 
 		final ObjectNode json = root.toJson(objectMapper);
-		
-		final URL expectedResourceURL = Resources.getResource("mabxml.jsonschema");
+
+		final URL expectedResourceURL = Resources.getResource(resultFileName);
 		final String expectedJSONString = Resources.toString(expectedResourceURL, Charsets.UTF_8);
-		
+
 		final String actualJSONString = objectMapper.writeValueAsString(json);
-		
+
 		Assert.assertEquals(expectedJSONString, actualJSONString);
 	}
 }
