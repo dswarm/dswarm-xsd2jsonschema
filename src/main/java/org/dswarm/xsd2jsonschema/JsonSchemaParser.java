@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import com.sun.xml.xsom.XSAttributeDecl;
 import com.sun.xml.xsom.XSAttributeUse;
@@ -54,6 +55,13 @@ import org.dswarm.xsd2jsonschema.model.JSString;
 
 public class JsonSchemaParser {
 
+	private static final String HASH        = "#";
+	private static final String HTTP_PREFIX = "http://";
+	private static final String SLASH       = "/";
+	private static final String AT          = "@";
+	private static final String WILDCARD    = "wildcard";
+	private static final String NULL        = "null";
+
 	private final XSOMParser parser = new XSOMParser();
 
 	private List<JSElement> iterateParticle(final XSParticle particle) {
@@ -71,12 +79,17 @@ public class JsonSchemaParser {
 		}
 
 		final ArrayList<JSElement> jsElements = new ArrayList<>(1);
-		jsElements.add(iterateSingleParticle(particle));
+		final Optional<JSElement> optionalJSElement = iterateSingleParticle(particle);
+
+		if (optionalJSElement.isPresent()) {
+
+			jsElements.add(optionalJSElement.get());
+		}
 
 		return jsElements;
 	}
 
-	private JSElement iterateSingleParticle(final XSParticle particle) {
+	private Optional<JSElement> iterateSingleParticle(final XSParticle particle) {
 
 		final XSTerm term = particle.getTerm();
 		if (term.isElementDecl()) {
@@ -85,7 +98,7 @@ public class JsonSchemaParser {
 
 			final JSElement element = iterateElement(xsElementDecl);
 
-			return particle.isRepeated() ? new JSArray(element) : element;
+			return particle.isRepeated() ? Optional.of(new JSArray(element)) : Optional.ofNullable(element);
 		} else if (term.isModelGroupDecl()) {
 
 			final XSModelGroupDecl xsModelGroupDecl = term.asModelGroupDecl();
@@ -93,16 +106,26 @@ public class JsonSchemaParser {
 
 			final List<JSElement> elements = iterateModelGroup(xsModelGroupDecl.getModelGroup());
 
-			return new JSObject(name, elements);
+			return Optional.of(new JSObject(name, elements));
 
-		} else if (term.isWildcard() && term instanceof XSWildcard.Other) {
+		} else if (term.isWildcard()) {
 
-			final XSWildcard.Other xsWildcardOther = (XSWildcard.Other) term;
+			// TODO: what should we do with other XS wildcard types, i.e., 'any' and 'union'
 
-			return new JSOther("wildcard", xsWildcardOther.getOtherNamespace());
+			if (term instanceof XSWildcard.Other) {
+
+				final XSWildcard.Other xsWildcardOther = (XSWildcard.Other) term;
+
+				return Optional.of(new JSOther(WILDCARD, xsWildcardOther.getOtherNamespace()));
+			} else if (term instanceof XSWildcard.Any) {
+
+				// TODO: shall we do something else here??
+
+				return Optional.empty();
+			}
 		}
 
-		return new JSNull("null");
+		return Optional.of(new JSNull(NULL));
 	}
 
 	private List<JSElement> iterateModelGroup(final XSModelGroup modelGroup) {
@@ -120,7 +143,12 @@ public class JsonSchemaParser {
 				list.addAll(iterateModelGroup(term.asModelGroupDecl().getModelGroup()));
 			} else {
 
-				list.add(iterateSingleParticle(xsParticle));
+				final Optional<JSElement> optionalJSElement = iterateSingleParticle(xsParticle);
+
+				if (optionalJSElement.isPresent()) {
+
+					list.add(optionalJSElement.get());
+				}
 			}
 		}
 
@@ -224,7 +252,7 @@ public class JsonSchemaParser {
 
 			final String attributeName = getDeclarationName(attributeUseDecl, complexType);
 
-			result.add(iterateSimpleType(type).withName("@" + attributeName));
+			result.add(iterateSimpleType(type).withName(AT + attributeName));
 		}
 	}
 
@@ -274,6 +302,14 @@ public class JsonSchemaParser {
 			while (xsElementDeclIterator.hasNext()) {
 
 				final XSElementDecl elementDecl = xsElementDeclIterator.next();
+
+				if (elementDecl.isAbstract()) {
+
+					// skip abstract elements for now (however, we should treat them separately somehow)
+
+					continue;
+				}
+
 				final JSElement element = iterateElement(elementDecl);
 
 				root.add(element);
@@ -292,11 +328,18 @@ public class JsonSchemaParser {
 	}
 
 	private String getDeclarationNameWithNamespace(final XSDeclaration decl, final String targetNameSpace) {
+
 		final String declName;
 
 		if (targetNameSpace != null && !targetNameSpace.trim().isEmpty()) {
 
-			declName = targetNameSpace + "#" + decl.getName();
+			if (targetNameSpace.endsWith(SLASH)) {
+
+				declName = targetNameSpace + decl.getName();
+			} else {
+
+				declName = targetNameSpace + HASH + decl.getName();
+			}
 		} else {
 
 			declName = decl.getName();
@@ -309,7 +352,7 @@ public class JsonSchemaParser {
 
 		final String declName = getDeclarationName(decl);
 
-		if (declName.startsWith("http://")) {
+		if (declName.startsWith(HTTP_PREFIX)) {
 
 			return declName;
 		}

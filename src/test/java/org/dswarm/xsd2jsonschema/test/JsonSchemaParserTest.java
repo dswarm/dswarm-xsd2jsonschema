@@ -31,6 +31,19 @@ import java.net.URL;
 public class JsonSchemaParserTest {
 
 	@Test
+	public void testJsonSchemaParserDCElements() throws Exception {
+
+		testJsonSchemaParserInternal("dc.xsd", "dcelements.jsonschema", "__ROOT_NODE__");
+	}
+
+	// doesn't work yet
+	//@Test
+	public void testJsonSchemaParserDCTerms() throws Exception {
+
+		testJsonSchemaParserInternal("dcterms.xsd", "dcterms.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
 	public void testJsonSchemaParserWMabxml() throws Exception {
 
 		testJsonSchemaParserInternal("mabxml-1.xsd", "mabxml.jsonschema", "bla");
