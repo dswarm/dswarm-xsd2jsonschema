@@ -127,17 +127,15 @@ public class JsonSchemaParser {
 		}*/
 		else if (term instanceof XSWildcard) {
 
-			XSWildcard wildcard = (XSWildcard) term;
+			final XSWildcard wildcard = (XSWildcard) term;
 
 			// TODO: what should we do with other XS wildcard types, i.e., 'any' and 'union'
 
 			// is this XSOM XSWildCard.Other ??
-			if (XSWildcard.NSCONSTRAINT_LIST == wildcard.getConstraintType()) {
+			if (XSWildcard.NSCONSTRAINT_NOT == wildcard.getConstraintType()) {
 
-				//final XSWildcard.Other xsWildcardOther = (XSWildcard.Other) term;
-
-				//return Optional.of(new JSOther(WILDCARD, wildcard.getNsConstraintList()));
-				return Optional.empty();
+				// wo do not have "other namespace" available here
+				return Optional.of(new JSOther(WILDCARD, null));
 			} else if (XSWildcard.NSCONSTRAINT_ANY == wildcard.getConstraintType()) {
 
 				// TODO: shall we do something else here??

@@ -31,12 +31,17 @@ import java.net.URL;
 public class JsonSchemaParserTest {
 
 	@Test
+	public void testJsonSchemaParserOAIPMH() throws Exception {
+
+		testJsonSchemaParserInternal("OAI-PMH.xsd", "oai-pmh.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
 	public void testJsonSchemaParserDCElements() throws Exception {
 
 		testJsonSchemaParserInternal("dc.xsd", "dcelements.jsonschema", "__ROOT_NODE__");
 	}
 
-	// doesn't work yet
 	@Test
 	public void testJsonSchemaParserDCTerms() throws Exception {
 
