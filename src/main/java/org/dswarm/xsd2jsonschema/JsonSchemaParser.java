@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sun.org.apache.xerces.internal.dom.DOMInputImpl;
-import com.sun.org.apache.xerces.internal.impl.xs.XSImplementationImpl;
 import com.sun.org.apache.xerces.internal.xs.XSAttributeDeclaration;
 import com.sun.org.apache.xerces.internal.xs.XSAttributeUse;
 import com.sun.org.apache.xerces.internal.xs.XSComplexTypeDefinition;
@@ -43,6 +42,7 @@ import com.sun.org.apache.xerces.internal.xs.XSSimpleTypeDefinition;
 import com.sun.org.apache.xerces.internal.xs.XSTerm;
 import com.sun.org.apache.xerces.internal.xs.XSTypeDefinition;
 import com.sun.org.apache.xerces.internal.xs.XSWildcard;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.LSInput;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -64,8 +64,26 @@ public class JsonSchemaParser {
 	private static final String WILDCARD    = "wildcard";
 	private static final String NULL        = "null";
 
-	private static final XSImplementation impl         = (XSImplementation) new XSImplementationImpl();
-	private static final XSLoader         schemaLoader = impl.createXSLoader(null);
+	//private static final XSImplementation impl         = (XSImplementation) new XSImplementationImpl();
+
+	private static XSImplementation impl;
+
+	static {
+
+		System.setProperty(DOMImplementationRegistry.PROPERTY, "com.sun.org.apache.xerces.internal.dom.DOMXSImplementationSourceImpl");
+
+		try {
+
+			final DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+
+			impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	private static final XSLoader schemaLoader = impl.createXSLoader(null);
 
 	private XSModel model = null;
 
