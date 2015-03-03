@@ -3,140 +3,280 @@
   "type" : "object",
   "mixed" : false,
   "properties" : {
-    "http://purl.org/dc/elements/1.1/date" : {
+    "http://purl.org/dc/terms/relation" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/coverage" : {
+    "http://purl.org/dc/terms/source" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/identifier" : {
+    "http://purl.org/dc/terms/dateAccepted" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/creator" : {
+    "http://purl.org/dc/terms/type" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/subject" : {
+    "http://purl.org/dc/terms/mediator" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/format" : {
+    "http://purl.org/dc/terms/temporal" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/description" : {
+    "http://purl.org/dc/terms/valid" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/language" : {
+    "http://purl.org/dc/terms/coverage" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/source" : {
+    "http://purl.org/dc/terms/audience" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/title" : {
+    "http://purl.org/dc/terms/isReplacedBy" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/type" : {
+    "http://purl.org/dc/terms/rights" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/relation" : {
+    "http://purl.org/dc/terms/requires" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/contributor" : {
+    "http://purl.org/dc/terms/contributor" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/rights" : {
+    "http://purl.org/dc/terms/conformsTo" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
     },
-    "http://purl.org/dc/elements/1.1/publisher" : {
+    "http://purl.org/dc/terms/modified" : {
       "type" : "object",
       "mixed" : true,
-      "properties" : {
-        "@http://www.w3.org/XML/1998/namespace#lang" : {
-          "type" : "string"
-        }
-      }
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/references" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/isReferencedBy" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/medium" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/spatial" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/title" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/abstract" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/rightsHolder" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/alternative" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/hasFormat" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/provenance" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/bibliographicCitation" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/isPartOf" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/isVersionOf" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/hasVersion" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/available" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/accrualPeriodicity" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/tableOfContents" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/date" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/hasPart" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/created" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/extent" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/educationLevel" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/isFormatOf" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/identifier" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/instructionalMethod" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/accrualPolicy" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/license" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/subject" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/accrualMethod" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/accessRights" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/format" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/creator" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/dateSubmitted" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/dateCopyrighted" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/replaces" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/isRequiredBy" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/issued" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/publisher" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/description" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
+    },
+    "http://purl.org/dc/terms/language" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : { }
     }
   }
 }

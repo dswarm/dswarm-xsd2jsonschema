@@ -21,27 +21,29 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import com.sun.xml.xsom.XSAttributeDecl;
-import com.sun.xml.xsom.XSAttributeUse;
-import com.sun.xml.xsom.XSComplexType;
-import com.sun.xml.xsom.XSContentType;
-import com.sun.xml.xsom.XSDeclaration;
-import com.sun.xml.xsom.XSElementDecl;
-import com.sun.xml.xsom.XSModelGroup;
-import com.sun.xml.xsom.XSModelGroupDecl;
-import com.sun.xml.xsom.XSParticle;
-import com.sun.xml.xsom.XSSchema;
-import com.sun.xml.xsom.XSSchemaSet;
-import com.sun.xml.xsom.XSSimpleType;
-import com.sun.xml.xsom.XSTerm;
-import com.sun.xml.xsom.XSType;
-import com.sun.xml.xsom.XSWildcard;
-import com.sun.xml.xsom.parser.XSOMParser;
+import com.sun.org.apache.xerces.internal.dom.DOMInputImpl;
+import com.sun.org.apache.xerces.internal.impl.xs.XSImplementationImpl;
+import com.sun.org.apache.xerces.internal.xs.XSAttributeDeclaration;
+import com.sun.org.apache.xerces.internal.xs.XSAttributeUse;
+import com.sun.org.apache.xerces.internal.xs.XSComplexTypeDefinition;
+import com.sun.org.apache.xerces.internal.xs.XSConstants;
+import com.sun.org.apache.xerces.internal.xs.XSElementDeclaration;
+import com.sun.org.apache.xerces.internal.xs.XSImplementation;
+import com.sun.org.apache.xerces.internal.xs.XSLoader;
+import com.sun.org.apache.xerces.internal.xs.XSModel;
+import com.sun.org.apache.xerces.internal.xs.XSModelGroup;
+import com.sun.org.apache.xerces.internal.xs.XSNamedMap;
+import com.sun.org.apache.xerces.internal.xs.XSObject;
+import com.sun.org.apache.xerces.internal.xs.XSObjectList;
+import com.sun.org.apache.xerces.internal.xs.XSParticle;
+import com.sun.org.apache.xerces.internal.xs.XSSimpleTypeDefinition;
+import com.sun.org.apache.xerces.internal.xs.XSTerm;
+import com.sun.org.apache.xerces.internal.xs.XSTypeDefinition;
+import com.sun.org.apache.xerces.internal.xs.XSWildcard;
+import org.w3c.dom.ls.LSInput;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -62,21 +64,28 @@ public class JsonSchemaParser {
 	private static final String WILDCARD    = "wildcard";
 	private static final String NULL        = "null";
 
-	private final XSOMParser parser = new XSOMParser();
+	private static final XSImplementation impl         = (XSImplementation) new XSImplementationImpl();
+	private static final XSLoader         schemaLoader = impl.createXSLoader(null);
+
+	private XSModel model = null;
 
 	private List<JSElement> iterateParticle(final XSParticle particle) {
 
 		final XSTerm term = particle.getTerm();
 
-		if (term.isModelGroup()) {
+		if (term instanceof XSModelGroup) {
 
-			final XSModelGroup modelGroup = term.asModelGroup();
+			final XSModelGroup modelGroup = (XSModelGroup) term;
 			return iterateModelGroup(modelGroup);
-		} else if (term.isModelGroupDecl()) {
+		}
+
+		// TODO: dunno how to replace this? -> we can cast it to XSModelGroup but maybe it should ba a XSModelGroupDefinition and has something to do with substition groups
+		/*else if (term.isModelGroupDecl()) {
 
 			final XSModelGroupDecl xsModelGroupDecl = term.asModelGroupDecl();
 			return iterateModelGroup(xsModelGroupDecl.getModelGroup());
 		}
+		*/
 
 		final ArrayList<JSElement> jsElements = new ArrayList<>(1);
 		final Optional<JSElement> optionalJSElement = iterateSingleParticle(particle);
@@ -92,14 +101,21 @@ public class JsonSchemaParser {
 	private Optional<JSElement> iterateSingleParticle(final XSParticle particle) {
 
 		final XSTerm term = particle.getTerm();
-		if (term.isElementDecl()) {
+		if (term instanceof XSElementDeclaration) {
 
-			final XSElementDecl xsElementDecl = term.asElementDecl();
+			final XSElementDeclaration xsElementDecl = (XSElementDeclaration) term;
 
-			final JSElement element = iterateElement(xsElementDecl);
+			final Optional<JSElement> optionalElement = iterateElement(xsElementDecl);
 
-			return particle.isRepeated() ? Optional.of(new JSArray(element)) : Optional.ofNullable(element);
-		} else if (term.isModelGroupDecl()) {
+			if (!optionalElement.isPresent()) {
+
+				return Optional.empty();
+			}
+
+			return isRepeated(particle) ? Optional.of(new JSArray(optionalElement.get())) : Optional.ofNullable(optionalElement.get());
+		}
+		// TODO: dunno how to replace this? -> we can cast it to XSModelGroup but maybe it should ba a XSModelGroupDefinition and has something to do with substition groups
+		/*else if (term.isModelGroupDecl()) {
 
 			final XSModelGroupDecl xsModelGroupDecl = term.asModelGroupDecl();
 			final String name = getDeclarationName(xsModelGroupDecl);
@@ -108,16 +124,21 @@ public class JsonSchemaParser {
 
 			return Optional.of(new JSObject(name, elements));
 
-		} else if (term.isWildcard()) {
+		}*/
+		else if (term instanceof XSWildcard) {
+
+			XSWildcard wildcard = (XSWildcard) term;
 
 			// TODO: what should we do with other XS wildcard types, i.e., 'any' and 'union'
 
-			if (term instanceof XSWildcard.Other) {
+			// is this XSOM XSWildCard.Other ??
+			if (XSWildcard.NSCONSTRAINT_LIST == wildcard.getConstraintType()) {
 
-				final XSWildcard.Other xsWildcardOther = (XSWildcard.Other) term;
+				//final XSWildcard.Other xsWildcardOther = (XSWildcard.Other) term;
 
-				return Optional.of(new JSOther(WILDCARD, xsWildcardOther.getOtherNamespace()));
-			} else if (term instanceof XSWildcard.Any) {
+				//return Optional.of(new JSOther(WILDCARD, wildcard.getNsConstraintList()));
+				return Optional.empty();
+			} else if (XSWildcard.NSCONSTRAINT_ANY == wildcard.getConstraintType()) {
 
 				// TODO: shall we do something else here??
 
@@ -132,16 +153,23 @@ public class JsonSchemaParser {
 
 		final List<JSElement> list = new ArrayList<>();
 
-		for (final XSParticle xsParticle : modelGroup) {
+		final XSObjectList particles = modelGroup.getParticles();
 
+		for (int i = 0; i < particles.getLength(); i++) {
+
+			final XSParticle xsParticle = (XSParticle) particles.item(i);
 			final XSTerm term = xsParticle.getTerm();
-			if (term.isModelGroup()) {
+			if (term instanceof XSModelGroup) {
 
 				list.addAll(iterateParticle(xsParticle));
-			} else if (term.isModelGroupDecl()) {
+			}
+			// TODO: dunno how to replace this? -> we can cast it to XSModelGroup but maybe it should ba a XSModelGroupDefinition and has something to do with substition groups
+			/*else if (term.isModelGroupDecl()) {
 
 				list.addAll(iterateModelGroup(term.asModelGroupDecl().getModelGroup()));
-			} else {
+			}*/
+
+			else {
 
 				final Optional<JSElement> optionalJSElement = iterateSingleParticle(xsParticle);
 
@@ -155,82 +183,92 @@ public class JsonSchemaParser {
 		return list;
 	}
 
-	private JSElement iterateElement(final XSElementDecl elementDecl) {
+	private Optional<JSElement> iterateElement(final XSElementDeclaration elementDecl) {
 
-		final XSType xsElementDeclType = elementDecl.getType();
+		try {
 
-		final String elementName = getDeclarationName(elementDecl);
+			final String elementName = getDeclarationName(elementDecl);
 
-		if (xsElementDeclType.isSimpleType()) {
+			//System.out.println(elementName);
 
-			return iterateSimpleType(xsElementDeclType.asSimpleType()).withName(elementName);
+			final XSTypeDefinition xsElementDeclType = elementDecl.getTypeDefinition();
 
-		} else if (xsElementDeclType.isComplexType()) {
+			if (XSTypeDefinition.SIMPLE_TYPE == xsElementDeclType.getTypeCategory()) {
 
-			final XSComplexType xsComplexType = xsElementDeclType.asComplexType();
-			final boolean isMixed = xsComplexType.isMixed();
-			final XSSimpleType type = xsComplexType.getContentType().asSimpleType();
+				return Optional.ofNullable(iterateSimpleType((XSSimpleTypeDefinition) xsElementDeclType).withName(elementName));
 
-			if (type != null) {
-				final JSElement simpleJsElement = iterateSimpleType(type).withName(elementName);
+			} else if (XSTypeDefinition.COMPLEX_TYPE == xsElementDeclType.getTypeCategory()) {
 
-				final int numAttributes = xsComplexType.getAttributeUses().size();
-				if (numAttributes > 0) {
-					final List<JSElement> elements = new ArrayList<>(numAttributes);
-					final JSObject jsElements;
+				final XSComplexTypeDefinition xsComplexType = (XSComplexTypeDefinition) xsElementDeclType;
+				final boolean isMixed = isMixed(xsComplexType);
+				final XSSimpleTypeDefinition type = xsComplexType.getSimpleType();
 
-					// to avoid doubling of attribute in attribute path
-					if (!elementName.equals(simpleJsElement.getName())) {
+				if (type != null) {
+					final JSElement simpleJsElement = iterateSimpleType(type).withName(elementName);
 
-						jsElements = new JSObject(elementName, isMixed);
+					final int numAttributes = xsComplexType.getAttributeUses().size();
+					if (numAttributes > 0) {
+						final List<JSElement> elements = new ArrayList<>(numAttributes);
+						final JSObject jsElements;
 
-						jsElements.add(simpleJsElement);
+						// to avoid doubling of attribute in attribute path
+						if (!elementName.equals(simpleJsElement.getName())) {
+
+							jsElements = new JSObject(elementName, isMixed);
+
+							jsElements.add(simpleJsElement);
+						} else {
+
+							jsElements = new JSObject(elementName, true);
+						}
+
+						iterateComplexAttributes(xsComplexType, elements);
+
+						jsElements.addAll(elements);
+
+						return Optional.ofNullable(jsElements);
 					} else {
 
-						jsElements = new JSObject(elementName, true);
+						return Optional.ofNullable(simpleJsElement);
 					}
 
-					iterateComplexAttributes(xsComplexType, elements);
-
-					jsElements.addAll(elements);
-
-					return jsElements;
-				} else {
-
-					return simpleJsElement;
 				}
 
+				final JSObject jsElements = new JSObject(elementName, isMixed);
+
+				final List<JSElement> elements = iterateComplexType(xsComplexType);
+
+				if (elements.size() == 1 && elements.get(0) instanceof JSOther) {
+
+					return Optional.ofNullable(elements.get(0).withName(jsElements.getName()));
+				}
+
+				jsElements.addAll(elements);
+
+				return Optional.ofNullable(jsElements);
 			}
 
-			final JSObject jsElements = new JSObject(elementName, isMixed);
+			return Optional.of(new JSNull(elementName));
+		} catch (final InternalError e) {
 
-			final List<JSElement> elements = iterateComplexType(xsComplexType);
-
-			if (elements.size() == 1 && elements.get(0) instanceof JSOther) {
-
-				return elements.get(0).withName(jsElements.getName());
-			}
-
-			jsElements.addAll(elements);
-
-			return jsElements;
+			e.printStackTrace();
 		}
 
-		return new JSNull(elementName);
+		return Optional.empty();
 	}
 
-	private List<JSElement> iterateComplexType(final XSComplexType complexType) {
+	private List<JSElement> iterateComplexType(final XSComplexTypeDefinition complexType) {
 
 		final ArrayList<JSElement> result = new ArrayList<>();
 
-		final XSContentType contentType = complexType.getContentType();
+		final short contentType = complexType.getContentType();
 
-		final XSParticle xsParticle = contentType.asParticle();
+		final XSParticle xsParticle = complexType.getParticle();
 		if (xsParticle != null) {
 
 			result.addAll(iterateParticle(xsParticle));
 		} else {
-			final XSSimpleType xsSimpleType = contentType.asSimpleType();
+			final XSSimpleTypeDefinition xsSimpleType = complexType.getSimpleType();
 			if (xsSimpleType != null) {
 
 				result.add(iterateSimpleType(xsSimpleType));
@@ -242,13 +280,13 @@ public class JsonSchemaParser {
 		return result;
 	}
 
-	private void iterateComplexAttributes(final XSComplexType complexType, final List<JSElement> result) {
+	private void iterateComplexAttributes(final XSComplexTypeDefinition complexType, final List<JSElement> result) {
 
-		final Collection<? extends XSAttributeUse> attributeUses = complexType.getAttributeUses();
+		final XSObjectList attributeUses = complexType.getAttributeUses();
 
-		for (final XSAttributeUse attributeUse : attributeUses) {
-			final XSAttributeDecl attributeUseDecl = attributeUse.getDecl();
-			final XSSimpleType type = attributeUseDecl.getType();
+		for (int i = 0; i < attributeUses.getLength(); i++) {
+			final XSAttributeDeclaration attributeUseDecl = ((XSAttributeUse) attributeUses.item(i)).getAttrDeclaration();
+			final XSSimpleTypeDefinition type = attributeUseDecl.getTypeDefinition();
 
 			final String attributeName = getDeclarationName(attributeUseDecl, complexType);
 
@@ -256,7 +294,7 @@ public class JsonSchemaParser {
 		}
 	}
 
-	private JSElement iterateSimpleType(final XSSimpleType simpleType) {
+	private JSElement iterateSimpleType(final XSSimpleTypeDefinition simpleType) {
 
 		final String simpleTypeName = getDeclarationName(simpleType);
 
@@ -264,70 +302,121 @@ public class JsonSchemaParser {
 	}
 
 	public void parse(final InputStream is) throws SAXException {
-		parser.parse(is);
+
+		final LSInput input = new DOMInputImpl();
+		input.setByteStream(is);
+
+		model = schemaLoader.load(input);
 	}
 
 	public void parse(final Reader reader) throws SAXException {
-		parser.parse(reader);
+		//parser.parse(reader);
 	}
 
 	public void parse(final File schema) throws SAXException, IOException {
-		parser.parse(schema);
+		//parser.parse(schema);
 	}
 
 	public void parse(final URL url) throws SAXException {
-		parser.parse(url);
+		//parser.parse(url);
 	}
 
 	public void parse(final String systemId) throws SAXException {
-		parser.parse(systemId);
+		//parser.parse(systemId);
 	}
 
 	public void parse(final InputSource source) throws SAXException {
-		parser.parse(source);
+		//parser.parse(source);
 	}
 
 	public JSRoot apply(final String rootName) throws SAXException {
 
-		final XSSchemaSet result = parser.getResult();
+		//final XSSchemaSet result = parser.getResult();
 
-		final Iterator<XSSchema> xsSchemaIterator = result.iterateSchema();
+		//final Iterator<XSSchema> xsSchemaIterator = result.iterateSchema();
 
 		final JSRoot root = new JSRoot(rootName);
 
-		while (xsSchemaIterator.hasNext()) {
-			final XSSchema xsSchema = xsSchemaIterator.next();
-			final Iterator<XSElementDecl> xsElementDeclIterator = xsSchema.iterateElementDecls();
+		//while (xsSchemaIterator.hasNext()) {
+		//final XSSchema xsSchema = xsSchemaIterator.next();
 
-			while (xsElementDeclIterator.hasNext()) {
+		final XSNamedMap elements = model.getComponents(XSConstants.ELEMENT_DECLARATION);
 
-				final XSElementDecl elementDecl = xsElementDeclIterator.next();
+		for (int i = 0; i < elements.getLength(); i++) {
 
-				if (elementDecl.isAbstract()) {
+			XSObject object = elements.item(i);
+
+			if (object instanceof XSElementDeclaration) {
+
+				XSElementDeclaration elementDecl = (XSElementDeclaration) object;
+
+				if (elementDecl.getAbstract()) {
 
 					// skip abstract elements for now (however, we should treat them separately somehow)
 
 					continue;
 				}
 
-				final JSElement element = iterateElement(elementDecl);
+				final Optional<JSElement> optionalElement = iterateElement(elementDecl);
 
-				root.add(element);
+				if (optionalElement.isPresent()) {
 
+					root.add(optionalElement.get());
+				}
 			}
 		}
+		//
+		//		final Set<SchemaDocument> docs = parser.getDocuments();
+		//
+		//		XSSchema xsSchema = null;
+		//
+		//		for (final SchemaDocument doc : docs) {
+		//
+		//			if ("http://purl.org/dc/terms/".equals(doc.getSchema().getTargetNamespace())) {
+		//
+		//				xsSchema = doc.getSchema();
+		//
+		//				break;
+		//			}
+		//		}
+		//
+		//		final Iterator<XSElementDecl> xsElementDeclIterator = xsSchema.iterateElementDecls();
+		//		//final Map<String, XSElementDecl> xsElementDeclMap = xsSchema.getElementDecls();
+		//
+		//		while (xsElementDeclIterator.hasNext()) {
+		//			//for(final XSElementDecl elementDecl : xsElementDeclMap.values()) {
+		//
+		//			final XSElementDecl elementDecl = xsElementDeclIterator.next();
+		//
+		//			if (elementDecl.isAbstract()) {
+		//
+		//				// skip abstract elements for now (however, we should treat them separately somehow)
+		//
+		//				continue;
+		//			}
+		//
+		//			final Optional<JSElement> optionalElement = iterateElement(elementDecl);
+		//
+		//			if (optionalElement.isPresent()) {
+		//
+		//				root.add(optionalElement.get());
+		//			}
+
+		//}
+		//}
+		//}
 
 		return root;
 	}
 
-	private String getDeclarationName(final XSDeclaration decl) {
+	private String getDeclarationName(final XSObject decl) {
 
-		final String targetNameSpace = decl.getTargetNamespace();
+		final String targetNameSpace = decl.getNamespace();
 
 		return getDeclarationNameWithNamespace(decl, targetNameSpace);
 	}
 
-	private String getDeclarationNameWithNamespace(final XSDeclaration decl, final String targetNameSpace) {
+	private String getDeclarationNameWithNamespace(final XSObject decl, final String targetNameSpace) {
 
 		final String declName;
 
@@ -348,7 +437,7 @@ public class JsonSchemaParser {
 		return declName;
 	}
 
-	private String getDeclarationName(final XSDeclaration decl, final XSDeclaration alternativeDecl) {
+	private String getDeclarationName(final XSObject decl, final XSObject alternativeDecl) {
 
 		final String declName = getDeclarationName(decl);
 
@@ -357,7 +446,19 @@ public class JsonSchemaParser {
 			return declName;
 		}
 
-		return getDeclarationNameWithNamespace(decl, alternativeDecl.getTargetNamespace());
+		return getDeclarationNameWithNamespace(decl, alternativeDecl.getNamespace());
+	}
+
+	private boolean isMixed(final XSComplexTypeDefinition decl) {
+
+		final short contentType = decl.getContentType();
+
+		return XSComplexTypeDefinition.CONTENTTYPE_MIXED == contentType;
+	}
+
+	private boolean isRepeated(final XSParticle particle) {
+
+		return particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1;
 	}
 }
 
