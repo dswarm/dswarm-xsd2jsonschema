@@ -43,6 +43,12 @@ public class JsonSchemaParserTest {
 	}
 
 	@Test
+	public void testJsonSchemaParserOAIDCElements() throws Exception {
+
+		testJsonSchemaParserInternal("oai_dc.xsd", "oai_dcelements.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
 	public void testJsonSchemaParserDCTerms() throws Exception {
 
 		testJsonSchemaParserInternal("dcterms.xsd", "dcterms.jsonschema", "__ROOT_NODE__");
