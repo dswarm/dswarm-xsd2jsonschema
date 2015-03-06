@@ -1,0 +1,344 @@
+{
+  "title" : "__ROOT_NODE__",
+  "type" : "object",
+  "mixed" : false,
+  "properties" : {
+    "http://www.openarchives.org/OAI/2.0/OAI-PMH" : {
+      "type" : "object",
+      "mixed" : false,
+      "properties" : {
+        "http://www.openarchives.org/OAI/2.0/responseDate" : {
+          "type" : "string"
+        },
+        "http://www.openarchives.org/OAI/2.0/request" : {
+          "type" : "object",
+          "mixed" : true,
+          "properties" : {
+            "@http://www.openarchives.org/OAI/2.0/verb" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/identifier" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/metadataPrefix" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/from" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/until" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/set" : {
+              "type" : "string"
+            },
+            "@http://www.openarchives.org/OAI/2.0/resumptionToken" : {
+              "type" : "string"
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/error" : {
+          "type" : "array",
+          "items" : {
+            "http://www.openarchives.org/OAI/2.0/error" : {
+              "type" : "object",
+              "mixed" : true,
+              "properties" : {
+                "@http://www.openarchives.org/OAI/2.0/code" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/Identify" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/repositoryName" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/baseURL" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/protocolVersion" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/adminEmail" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/adminEmail" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "http://www.openarchives.org/OAI/2.0/earliestDatestamp" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/deletedRecord" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/granularity" : {
+              "type" : "string"
+            },
+            "http://www.openarchives.org/OAI/2.0/compression" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/compression" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "http://www.openarchives.org/OAI/2.0/description" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/description" : {
+                  "type" : "other",
+                  "namespace" : null
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/ListMetadataFormats" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/metadataFormat" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/metadataFormat" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.openarchives.org/OAI/2.0/metadataPrefix" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/schema" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/metadataNamespace" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/ListSets" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/set" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/set" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/setName" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/setDescription" : {
+                      "type" : "array",
+                      "items" : {
+                        "http://www.openarchives.org/OAI/2.0/setDescription" : {
+                          "type" : "other",
+                          "namespace" : null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "http://www.openarchives.org/OAI/2.0/resumptionToken" : {
+              "type" : "object",
+              "mixed" : true,
+              "properties" : {
+                "@http://www.openarchives.org/OAI/2.0/expirationDate" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/completeListSize" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/cursor" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/GetRecord" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/record" : {
+              "type" : "object",
+              "mixed" : false,
+              "properties" : {
+                "http://www.openarchives.org/OAI/2.0/header" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.openarchives.org/OAI/2.0/identifier" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/datestamp" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                      "type" : "array",
+                      "items" : {
+                        "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                          "type" : "string"
+                        }
+                      }
+                    },
+                    "@http://www.openarchives.org/OAI/2.0/status" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "http://www.openarchives.org/OAI/2.0/metadata" : {
+                  "type" : "other",
+                  "namespace" : null
+                },
+                "http://www.openarchives.org/OAI/2.0/about" : {
+                  "type" : "array",
+                  "items" : {
+                    "http://www.openarchives.org/OAI/2.0/about" : {
+                      "type" : "other",
+                      "namespace" : null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/ListIdentifiers" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/header" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/header" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.openarchives.org/OAI/2.0/identifier" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/datestamp" : {
+                      "type" : "string"
+                    },
+                    "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                      "type" : "array",
+                      "items" : {
+                        "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                          "type" : "string"
+                        }
+                      }
+                    },
+                    "@http://www.openarchives.org/OAI/2.0/status" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            },
+            "http://www.openarchives.org/OAI/2.0/resumptionToken" : {
+              "type" : "object",
+              "mixed" : true,
+              "properties" : {
+                "@http://www.openarchives.org/OAI/2.0/expirationDate" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/completeListSize" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/cursor" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "http://www.openarchives.org/OAI/2.0/ListRecords" : {
+          "type" : "object",
+          "mixed" : false,
+          "properties" : {
+            "http://www.openarchives.org/OAI/2.0/record" : {
+              "type" : "array",
+              "items" : {
+                "http://www.openarchives.org/OAI/2.0/record" : {
+                  "type" : "object",
+                  "mixed" : false,
+                  "properties" : {
+                    "http://www.openarchives.org/OAI/2.0/header" : {
+                      "type" : "object",
+                      "mixed" : false,
+                      "properties" : {
+                        "http://www.openarchives.org/OAI/2.0/identifier" : {
+                          "type" : "string"
+                        },
+                        "http://www.openarchives.org/OAI/2.0/datestamp" : {
+                          "type" : "string"
+                        },
+                        "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                          "type" : "array",
+                          "items" : {
+                            "http://www.openarchives.org/OAI/2.0/setSpec" : {
+                              "type" : "string"
+                            }
+                          }
+                        },
+                        "@http://www.openarchives.org/OAI/2.0/status" : {
+                          "type" : "string"
+                        }
+                      }
+                    },
+                    "http://www.openarchives.org/OAI/2.0/metadata" : {
+                      "type" : "other",
+                      "namespace" : null
+                    },
+                    "http://www.openarchives.org/OAI/2.0/about" : {
+                      "type" : "array",
+                      "items" : {
+                        "http://www.openarchives.org/OAI/2.0/about" : {
+                          "type" : "other",
+                          "namespace" : null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "http://www.openarchives.org/OAI/2.0/resumptionToken" : {
+              "type" : "object",
+              "mixed" : true,
+              "properties" : {
+                "@http://www.openarchives.org/OAI/2.0/expirationDate" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/completeListSize" : {
+                  "type" : "string"
+                },
+                "@http://www.openarchives.org/OAI/2.0/cursor" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

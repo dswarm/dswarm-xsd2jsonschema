@@ -1,0 +1,142 @@
+{
+  "title" : "__ROOT_NODE__",
+  "type" : "object",
+  "mixed" : false,
+  "properties" : {
+    "http://purl.org/dc/elements/1.1/relation" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/source" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/type" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/coverage" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/rights" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/contributor" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/title" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/date" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/identifier" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/subject" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/format" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/creator" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/publisher" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/description" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    },
+    "http://purl.org/dc/elements/1.1/language" : {
+      "type" : "object",
+      "mixed" : true,
+      "properties" : {
+        "@http://www.w3.org/XML/1998/namespace#lang" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}

@@ -31,6 +31,30 @@ import java.net.URL;
 public class JsonSchemaParserTest {
 
 	@Test
+	public void testJsonSchemaParserOAIPMH() throws Exception {
+
+		testJsonSchemaParserInternal("OAI-PMH.xsd", "oai-pmh.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
+	public void testJsonSchemaParserDCElements() throws Exception {
+
+		testJsonSchemaParserInternal("dc.xsd", "dcelements.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
+	public void testJsonSchemaParserOAIDCElements() throws Exception {
+
+		testJsonSchemaParserInternal("oai_dc.xsd", "oai_dcelements.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
+	public void testJsonSchemaParserDCTerms() throws Exception {
+
+		testJsonSchemaParserInternal("dcterms.xsd", "dcterms.jsonschema", "__ROOT_NODE__");
+	}
+
+	@Test
 	public void testJsonSchemaParserWMabxml() throws Exception {
 
 		testJsonSchemaParserInternal("mabxml-1.xsd", "mabxml.jsonschema", "bla");
@@ -49,8 +73,7 @@ public class JsonSchemaParserTest {
 
 		final JsonSchemaParser schemaParser = new JsonSchemaParser();
 
-		final URL resourceURL = Resources.getResource(xsdSchemaFileName);
-		final ByteSource byteSource = Resources.asByteSource(resourceURL);
+		final ByteSource byteSource = getByteSource(xsdSchemaFileName);
 
 		schemaParser.parse(byteSource.openStream());
 		final JSRoot root = schemaParser.apply(rootNodeIdentifier);
@@ -63,5 +86,12 @@ public class JsonSchemaParserTest {
 		final String actualJSONString = objectMapper.writeValueAsString(json);
 
 		Assert.assertEquals(expectedJSONString, actualJSONString);
+	}
+
+	private ByteSource getByteSource(final String xsdSchemaFileName) {
+
+		final URL resourceURL = Resources.getResource(xsdSchemaFileName);
+
+		return Resources.asByteSource(resourceURL);
 	}
 }
