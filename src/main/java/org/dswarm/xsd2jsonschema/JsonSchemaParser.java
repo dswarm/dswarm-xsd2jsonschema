@@ -76,6 +76,7 @@ public class JsonSchemaParser {
 	//private static final XSImplementation impl         = (XSImplementation) new XSImplementationImpl();
 
 	private static final XSLoader LOADER;
+	private static final int MAX_RECURSION_DEPTH = 7;
 
 	static {
 		System.setProperty(DOMImplementationRegistry.PROPERTY, "com.sun.org.apache.xerces.internal.dom.DOMXSImplementationSourceImpl");
@@ -94,22 +95,22 @@ public class JsonSchemaParser {
 
 	private XSModel model;
 
-	private Collection<JSElement> iterateParticle(final XSParticle particle) {
+	private Collection<JSElement> iterateParticle(final XSParticle particle, int depth) {
 
 		final XSTerm term = particle.getTerm();
 
 		if (term instanceof XSModelGroup) {
 
 			final XSModelGroup modelGroup = (XSModelGroup) term;
-			return iterateModelGroup(modelGroup);
+			return iterateModelGroup(modelGroup,depth);
 		}
 		else if (term instanceof XSModelGroupDefinition) {
 			final XSModelGroupDefinition xsModelGroupDefinition = (XSModelGroupDefinition) term;
-			return iterateModelGroup(xsModelGroupDefinition.getModelGroup());
+			return iterateModelGroup(xsModelGroupDefinition.getModelGroup(), depth);
 		}
 
 		final Collection<JSElement> jsElements = new ArrayList<>(1);
-		final Optional<JSElement> optionalJSElement = iterateSingleParticle(particle);
+		final Optional<JSElement> optionalJSElement = iterateSingleParticle(particle, depth);
 
 		if (optionalJSElement.isPresent()) {
 
@@ -119,14 +120,14 @@ public class JsonSchemaParser {
 		return jsElements;
 	}
 
-	private Optional<JSElement> iterateSingleParticle(final XSParticle particle) {
+	private Optional<JSElement> iterateSingleParticle(final XSParticle particle, int depth) {
 
 		final XSTerm term = particle.getTerm();
 		if (term instanceof XSElementDeclaration) {
 
 			final XSElementDeclaration xsElementDecl = (XSElementDeclaration) term;
 
-			final Optional<JSElement> optionalElement = iterateElement(xsElementDecl);
+			final Optional<JSElement> optionalElement = iterateElement(xsElementDecl, depth);
 
 			return optionalElement.map(el -> isRepeated(particle) ? new JSArray(el) : el);
 		}
@@ -136,7 +137,7 @@ public class JsonSchemaParser {
 			final XSModelGroupDefinition xsModelGroupDefinition = (XSModelGroupDefinition) term;
 			final String name = getDeclarationName(xsModelGroupDefinition);
 
-			final List<JSElement> elements = iterateModelGroup(xsModelGroupDefinition.getModelGroup());
+			final List<JSElement> elements = iterateModelGroup(xsModelGroupDefinition.getModelGroup(), depth);
 			return Optional.of(new JSObject(name, elements));
 		}
 
@@ -162,7 +163,7 @@ public class JsonSchemaParser {
 		return Optional.of(new JSNull(NULL));
 	}
 
-	private List<JSElement> iterateModelGroup(final XSModelGroup modelGroup) {
+	private List<JSElement> iterateModelGroup(final XSModelGroup modelGroup, int depth) {
 
 		final List<JSElement> list = new ArrayList<>();
 
@@ -174,17 +175,17 @@ public class JsonSchemaParser {
 			final XSTerm term = xsParticle.getTerm();
 			if (term instanceof XSModelGroup) {
 
-				list.addAll(iterateParticle(xsParticle));
+				list.addAll(iterateParticle(xsParticle,depth+1));
 			}
 
 			else if (term instanceof XSModelGroupDefinition) {
 				final XSModelGroupDefinition xsModelGroupDefinition = (XSModelGroupDefinition) term;
-				list.addAll(iterateModelGroup(xsModelGroupDefinition.getModelGroup()));
+				list.addAll(iterateModelGroup(xsModelGroupDefinition.getModelGroup(),depth + 1 ));
 			}
 
 			else {
 
-				final Optional<JSElement> optionalJSElement = iterateSingleParticle(xsParticle);
+				final Optional<JSElement> optionalJSElement = iterateSingleParticle(xsParticle, depth+1);
 				optionalJSElement.ifPresent(list::add);
 			}
 		}
@@ -192,13 +193,17 @@ public class JsonSchemaParser {
 		return list;
 	}
 
-	private Optional<JSElement> iterateElement(final XSElementDeclaration elementDecl) {
-
+	private Optional<JSElement> iterateElement(final XSElementDeclaration elementDecl, int depth) {
+		if(depth>MAX_RECURSION_DEPTH) {
+			LOG.error("Structure deeper than " , MAX_RECURSION_DEPTH );
+			return Optional.empty();
+		}
 		try {
 
 			final String elementName = getDeclarationName(elementDecl);
 
-			//System.out.println(elementName);
+			// System.out.println(elementName);
+			// System.out.println(depth);
 
 			final XSTypeDefinition xsElementDeclType = elementDecl.getTypeDefinition();
 
@@ -242,7 +247,7 @@ public class JsonSchemaParser {
 				}).orElseGet(() -> {
 					final JSObject jsElements = new JSObject(elementName, isMixed);
 
-					final List<JSElement> elements = iterateComplexType(xsComplexType);
+					final List<JSElement> elements = iterateComplexType(xsComplexType, depth);
 
 					if (elements.size() == 1 && elements.get(0) instanceof JSOther) {
 
@@ -265,14 +270,14 @@ public class JsonSchemaParser {
 		return Optional.empty();
 	}
 
-	private List<JSElement> iterateComplexType(final XSComplexTypeDefinition complexType) {
+	private List<JSElement> iterateComplexType(final XSComplexTypeDefinition complexType, int depth) {
 
 		final List<JSElement> result = new ArrayList<>();
 
 		final XSParticle xsParticle = complexType.getParticle();
 		if (xsParticle != null) {
 
-			result.addAll(iterateParticle(xsParticle));
+			result.addAll(iterateParticle(xsParticle,depth));
 		} else {
 			final XSSimpleTypeDefinition xsSimpleType = complexType.getSimpleType();
 			if (xsSimpleType != null) {
@@ -307,13 +312,17 @@ public class JsonSchemaParser {
 		return new JSString(simpleTypeName);
 	}
 
+	public void parse(final LSInput input) {
+		model = LOADER.load(input);
+	}
+
 	public void parse(final InputStream is) throws SAXException {
 		Preconditions.checkNotNull(LOADER, "The parser could not be initialised");
 
 		final LSInput input = new DOMInputImpl();
 		input.setByteStream(is);
+		parse(input);
 
-		model = LOADER.load(input);
 	}
 
 	public void parse(final Reader reader) throws SAXException {
@@ -355,7 +364,6 @@ public class JsonSchemaParser {
 		//final XSSchema xsSchema = xsSchemaIterator.next();
 
 		final XSNamedMap elements = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-
 		for (int i = 0; i < elements.getLength(); i++) {
 
 			final XSObject object = elements.item(i);
@@ -370,8 +378,7 @@ public class JsonSchemaParser {
 
 					continue;
 				}
-
-				iterateElement(elementDecl).ifPresent(root::add);
+				iterateElement(elementDecl, 1).ifPresent(root::add);
 			}
 		}
 		//
