@@ -18,6 +18,7 @@ package org.dswarm.xsd2jsonschema.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.formulasearchengine.mathmltools.mml.MathDoc;
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
@@ -64,6 +65,20 @@ public class JsonSchemaParserTest {
 	public void testJsonSchemaParserWMarc21() throws Exception {
 
 		testJsonSchemaParserInternal("MARC21slim.xsd", "marc21.jsonschema", "bla");
+	}
+
+    @Test
+	public void testJsonSchemaParserMathML() throws Exception {
+
+		final ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+		final JsonSchemaParser schemaParser = new JsonSchemaParser();
+		schemaParser.parse(MathDoc.getMathMLSchema());
+		final JSRoot root = schemaParser.apply("math" );
+
+		final ObjectNode json = root.toJson(objectMapper);
+		Assert.assertEquals(4,json.size());
 	}
 
 	private void testJsonSchemaParserInternal(final String xsdSchemaFileName, final String resultFileName, final String rootNodeIdentifier) throws Exception {
